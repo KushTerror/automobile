@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="Automobile-Web:war">
-    <output-path>$PROJECT_DIR$/Automobile-Web/target</output-path>
-    <root id="archive" name="auto-site.war">
-      <element id="artifact" artifact-name="Automobile-Web:war exploded" />
-    </root>
-  </artifact>
-</component>
