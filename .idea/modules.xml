@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Automobile.iml" filepath="$PROJECT_DIR$/Automobile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Automobile-Bal/Automobile-Bal.iml" filepath="$PROJECT_DIR$/Automobile-Bal/Automobile-Bal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Automobile-Commons/Automobile-Commons.iml" filepath="$PROJECT_DIR$/Automobile-Commons/Automobile-Commons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Automobile-Dal/Automobile-Dal.iml" filepath="$PROJECT_DIR$/Automobile-Dal/Automobile-Dal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Automobile-Models/Automobile-Models.iml" filepath="$PROJECT_DIR$/Automobile-Models/Automobile-Models.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Automobile-Rest/Automobile-Rest.iml" filepath="$PROJECT_DIR$/Automobile-Rest/Automobile-Rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Automobile-Web/Automobile-Web.iml" filepath="$PROJECT_DIR$/Automobile-Web/Automobile-Web.iml" />
+    </modules>
+  </component>
+</project>

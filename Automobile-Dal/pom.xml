@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>Automobile</artifactId>
+        <groupId>org.automobile</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+    <artifactId>automobile-dal</artifactId>
+    <description>Automobile web site data access layer</description>
+    <name>Automobile DAL</name>
+    <properties>
+        <org.postgresql.version>9.4.1211.jre7</org.postgresql.version>
+        <org.slf4j.version>1.7.10</org.slf4j.version>
+        <org.jboss.logging.version>3.2.1.Final</org.jboss.logging.version>
+        <automobile.version>1.0-SNAPSHOT</automobile.version>
+    </properties>
+    <dependencies>
+        <!-- database driver start -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${org.postgresql.version}</version>
+        </dependency>
+        <!-- database driver end -->
+
+        <!-- Core service data access dependencies start -->
+        <dependency>
+            <groupId>org.automobile</groupId>
+            <artifactId>automobile-commons</artifactId>
+            <version>${automobile.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.automobile</groupId>
+            <artifactId>automobile-models</artifactId>
+            <version>${automobile.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0-rc2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Core service data access dependencies end -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-bundle</artifactId>
+            <version>1.14</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
