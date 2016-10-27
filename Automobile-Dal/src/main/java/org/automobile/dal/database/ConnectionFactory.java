@@ -19,10 +19,6 @@
 
 package org.automobile.dal.database;
 
-import org.automobile.dal.database.enums.DatabaseUsers;
-import org.automobile.dal.database.enums.Databases;
-import org.automobile.dal.database.security.PasswordHelper;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
@@ -32,25 +28,17 @@ import java.util.Properties;
  *
  * @author kushal
  */
-public class ConnectionFactory {
+class ConnectionFactory {
 
-    public static PasswordHelper getPasswordHelper() {
-        return PasswordHelper.getInstance();
-    }
 
-    public static void disposePasswordHelper() {
-        PasswordHelper.disposeInstance();
-    }
+    private static ConnectionFactory factory;
+    private Connection mainConnection;
 
-    /**
-     * Returns the connection to the postgres database
-     *
-     * @return java.sql.Connection
-     * @throws Exception
-     */
-    public static Connection getMasterDbConnection() throws Exception {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres",
-                getProperties());
+    public static ConnectionFactory getInstance() {
+        if (factory == null) {
+            factory = new ConnectionFactory();
+        }
+        return factory;
     }
 
     /**
@@ -59,27 +47,21 @@ public class ConnectionFactory {
      * @return java.sql.Connection
      * @throws Exception
      */
-    public static Connection getPosDbConnection() throws Exception {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/automobile",
-                getProperties());
+    private Connection getMainConnection() throws Exception {
+        if (mainConnection == null) {
+            mainConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/corePos",
+                    getProperties());
+        }
+        if (mainConnection.isClosed()) {
+            mainConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/corePos",
+                    getProperties());
+        }
+        return mainConnection;
     }
 
-    /**
-     * Returns the connection to the required database
-     *
-     * @param databases database to connect to
-     * @return java.sql.Connection
-     * @throws Exception
-     */
-    public static Connection getDatabaseConnection(Databases databases) throws Exception {
-        switch (databases) {
-            case AUTOMOBILE:
-                return getPosDbConnection();
-            case MASTER:
-                return getMasterDbConnection();
-            default:
-                return getPosDbConnection();
-        }
+    private Connection getMainTransConnection() throws Exception {
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/corePos",
+                getProperties());
     }
 
     /**
@@ -88,13 +70,24 @@ public class ConnectionFactory {
      * @return java.util.Properties
      * @throws Exception
      */
-    private static Properties getProperties() throws Exception {
+    private Properties getProperties() throws Exception {
         Properties properties = new Properties();
         properties.setProperty("user", "postgres");
-        properties.setProperty("password", PasswordHelper.getInstance().getPassword(DatabaseUsers.postgres));
-        if (PasswordHelper.getInstance().isSupportSSL()) {
-            properties.setProperty("ssl", "true");
-        }
+        properties.setProperty("password", "godisgr8");
         return properties;
+    }
+
+    /**
+     * Returns the connection to the required database
+     *
+     * @return java.sql.Connection
+     * @throws Exception
+     */
+    Connection getDatabaseConnection() throws Exception {
+        return getMainConnection();
+    }
+
+    Connection getDatabaseTransConnection() throws Exception {
+        return getMainTransConnection();
     }
 }

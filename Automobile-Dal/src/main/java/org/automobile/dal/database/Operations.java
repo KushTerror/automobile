@@ -19,8 +19,6 @@
 
 package org.automobile.dal.database;
 
-
-import org.automobile.dal.database.enums.Databases;
 import org.automobile.dal.database.enums.QueryTypes;
 import org.automobile.dal.database.models.Parameter;
 import org.automobile.dal.database.models.ParameterValue;
@@ -34,23 +32,6 @@ import java.util.List;
  * @author Kushal
  */
 public class Operations {
-
-    /**
-     * Global Variable to maintain singleton instance for master database
-     * connection
-     */
-    private static Operations masterOps;
-
-    /**
-     * Global Variable to maintain singleton instance for pos database
-     * connection
-     */
-    private static Operations posOps;
-
-    /**
-     * Global Database types
-     */
-    private final Databases databases;
     /**
      * Global SQL Connection Instance
      */
@@ -59,7 +40,9 @@ public class Operations {
      * Global Prepared Statement Instance
      */
     private PreparedStatement preparedStatement;
-
+    /**
+     * Global Statement Instance
+     */
     private Statement statement;
     /**
      * Global Callable Statement instance
@@ -69,58 +52,20 @@ public class Operations {
     /**
      * Initalizes the class by instantiating the Logger Entity
      *
-     * @param databases Database to Connect to
      * @throws Exception
      */
-    public Operations(Databases databases) throws Exception {
-        this.databases = databases;
+    public Operations() throws Exception {
         initConnection();
     }
 
     /**
      * Method to return the singleton instance of the posOps class
      *
-     * @param databases database to connect to
      * @return org.compulynx.core.cmn.utl.database.posOps
      * @throws Exception
      */
-    public static Operations getInstance(Databases databases) throws Exception {
-        switch (databases) {
-            case MASTER: {
-                if (masterOps == null) {
-                    masterOps = new Operations(Databases.MASTER);
-                }
-                return masterOps;
-            }
-            case AUTOMOBILE: {
-                if (posOps == null) {
-                    posOps = new Operations(Databases.AUTOMOBILE);
-                }
-                return posOps;
-            }
-            default: {
-                if (posOps == null) {
-                    posOps = new Operations(Databases.AUTOMOBILE);
-                }
-                return posOps;
-            }
-        }
-    }
-
-    /**
-     * Method to dispose of all Singleton instances
-     *
-     * @throws Exception
-     */
-    public static void disposeInstance() throws Exception {
-        if (posOps != null) {
-            posOps.disposeAll();
-        }
-        posOps = null;
-        if (masterOps != null) {
-            masterOps.disposeAll();
-        }
-        masterOps = null;
+    public static Operations getInstance() throws Exception {
+        return new Operations();
     }
 
     /**
@@ -129,7 +74,7 @@ public class Operations {
      * @throws Exception
      */
     private void initConnection() throws Exception {
-        this.connection = ConnectionFactory.getDatabaseConnection(this.databases);
+        this.connection = ConnectionFactory.getInstance().getDatabaseConnection();
         if (connection == null || connection.isClosed()) {
             throw new NullPointerException("Null Connection, can not proceed");
         }
@@ -164,7 +109,6 @@ public class Operations {
         Dispose.sql(callableStatement);
         Dispose.sql(statement);
         Dispose.sql(connection);
-        ConnectionFactory.disposePasswordHelper();
     }
 
     /**
@@ -266,6 +210,7 @@ public class Operations {
         if (connection == null || connection.isClosed()) {
             initConnection();
         }
+       /*System.out.println(parameter.getQueryString());*/
         preparedStatement = connection.prepareStatement(parameter.getQueryString());
         setParameters(preparedStatement, parameter.getParameterValues());
         preparedStatement.executeUpdate();
@@ -546,50 +491,47 @@ public class Operations {
         }
     }
 
-    /**
-     * Method to update the database server password.
-     *
-     * @return true if password is updated
-     */
-    public boolean updatePassword() {
-        return ConnectionFactory.getPasswordHelper().updatePassword();
-    }
-
     public void executeBatchStatment(List<String> queries) throws Exception {
         statement = null;
         if (connection == null || connection.isClosed()) {
             initConnection();
         }
+
         statement = connection.createStatement();
+        //Stopwatch stopwatch = Stopwatch.createStarted();
         for (String query : queries) {
             statement.addBatch(query);
         }
+        //stopwatch.stop();
+        //System.out.println("\u001B[35m" + "Batch Statement Adding completed in (Seconds): " + stopwatch.elapsed(TimeUnit.SECONDS) + "\u001B[0m");
+        //stopwatch = Stopwatch.createStarted();
         statement.executeBatch();
+        //stopwatch.stop();
+        //System.out.println("\u001B[35m" + "Batch Statement Execution completed in (Seconds): " + stopwatch.elapsed(TimeUnit.SECONDS) + "\u001B[0m");
     }
 
     public Connection beginTransaction() throws Exception {
-        Connection connection = ConnectionFactory.getDatabaseConnection(this.databases);
-        if (connection == null || connection.isClosed()) {
-            throw new NullPointerException("Null Connection, can not proceed");
-        }
-        connection.setAutoCommit(false); //Begin Transaction Block
-        return connection;
+        Connection transConnection = ConnectionFactory.getInstance().getDatabaseConnection();
+        transConnection.setAutoCommit(false); //Begin Transaction Block
+        return transConnection;
     }
 
-    public void executeBatchStatment(List<String> queries, Connection connection) throws Exception {
-        Statement statement = connection.createStatement();
-        for (String query : queries) {
-            statement.addBatch(query);
-        }
-        statement.executeBatch();
+    public void commitTransaction(Connection transConnection) throws Exception {
+        transConnection.commit();
+        transConnection.setAutoCommit(true); //Begin Transaction Block
+        Dispose.sql(preparedStatement);
+        Dispose.sql(statement);
+        Dispose.sql(callableStatement);
+        Dispose.sql(transConnection);
     }
 
-    public void commitTransaction(Connection connection) throws Exception {
-        connection.commit();
+    public void rollBackTransaction(Connection transConnection) throws Exception {
+        transConnection.rollback();
+        transConnection.setAutoCommit(true); //Begin Transaction Block
+        Dispose.sql(preparedStatement);
+        Dispose.sql(statement);
+        Dispose.sql(callableStatement);
+        Dispose.sql(transConnection);
     }
-
-    public void rollBackTransaction(Connection connection) throws Exception {
-        connection.rollback();
-    }
-
 }
+
