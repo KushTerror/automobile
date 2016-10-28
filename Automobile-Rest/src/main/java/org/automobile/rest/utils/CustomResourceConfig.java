@@ -30,9 +30,9 @@ import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
 /**
- * @author Caleb
+ * @author Kushal
+ * @Date 27-Oct-16
  */
-
 public class CustomResourceConfig extends ResourceConfig {
     public CustomResourceConfig() {
         this.packages("org.automobile.rest.services;org.codehaus.jackson.jaxrs");

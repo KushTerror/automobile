@@ -28,10 +28,15 @@ import java.util.Properties;
  *
  * @author kushal
  */
-class ConnectionFactory {
+public class ConnectionFactory {
 
 
     private static ConnectionFactory factory;
+    private final String dbUser = "niytxhtvigaksk"/*"postgres"*/;
+    private final String dbPassword = "kKmQec2QXNfCTS91SrJjpmicMd"/*"godisgr8"*/;
+    private final String hostName = "ec2-54-243-47-83.compute-1.amazonaws.com"/*"localhost"*/;
+    private final int hostPort = 5432;
+    private final String databaseName = "ddcu22i8j1r21o"/*"AutoMobile"*/;
     private Connection mainConnection;
 
     public static ConnectionFactory getInstance() {
@@ -39,6 +44,26 @@ class ConnectionFactory {
             factory = new ConnectionFactory();
         }
         return factory;
+    }
+
+    public String getDbUser() {
+        return dbUser;
+    }
+
+    public String getDbPassword() {
+        return dbPassword;
+    }
+
+    public String getHostName() {
+        return hostName;
+    }
+
+    public int getHostPort() {
+        return hostPort;
+    }
+
+    public String getDatabaseName() {
+        return databaseName;
     }
 
     /**
@@ -49,19 +74,34 @@ class ConnectionFactory {
      */
     private Connection getMainConnection() throws Exception {
         if (mainConnection == null) {
-            mainConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/corePos",
-                    getProperties());
+            try {
+                Class.forName("org.postgresql.Driver");
+            } catch (ClassNotFoundException e) {
+                System.out.println("Where is your PostgresSQL JDBC Driver? Include in your library path!");
+                return null;
+            }
+            mainConnection = DriverManager.getConnection("jdbc:postgresql://" + hostName + ":" + hostPort + "/" + databaseName, getProperties());
         }
         if (mainConnection.isClosed()) {
-            mainConnection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/corePos",
-                    getProperties());
+            try {
+                Class.forName("org.postgresql.Driver");
+            } catch (ClassNotFoundException e) {
+                System.out.println("Where is your PostgresSQL JDBC Driver? Include in your library path!");
+                return null;
+            }
+            mainConnection = DriverManager.getConnection("jdbc:postgresql://" + hostName + ":" + hostPort + "/" + databaseName, getProperties());
         }
         return mainConnection;
     }
 
     private Connection getMainTransConnection() throws Exception {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/corePos",
-                getProperties());
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Where is your PostgresSQL JDBC Driver? Include in your library path!");
+            return null;
+        }
+        return DriverManager.getConnection("jdbc:postgresql://" + hostName + ":" + hostPort + "/" + databaseName, getProperties());
     }
 
     /**
@@ -72,8 +112,8 @@ class ConnectionFactory {
      */
     private Properties getProperties() throws Exception {
         Properties properties = new Properties();
-        properties.setProperty("user", "postgres");
-        properties.setProperty("password", "godisgr8");
+        properties.setProperty("user", dbUser);
+        properties.setProperty("password", dbPassword);
         return properties;
     }
 

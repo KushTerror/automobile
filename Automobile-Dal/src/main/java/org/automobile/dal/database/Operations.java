@@ -89,6 +89,7 @@ public class Operations {
         Dispose.sql(rs);
         Dispose.sql(preparedStatement);
         Dispose.sql(callableStatement);
+        Dispose.sql(statement);
     }
 
     /**
@@ -97,7 +98,6 @@ public class Operations {
     public void dispose() {
         Dispose.sql(preparedStatement);
         Dispose.sql(statement);
-        //System.out.println(preparedStatement);
         Dispose.sql(callableStatement);
     }
 

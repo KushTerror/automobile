@@ -31,11 +31,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.ws.rs.ext.ContextResolver;
 
 /**
- * @author Caleb
+ * @author Kushal
+ * @Date 27-Oct-16
  */
-
-public class CustomObjectMapperProvider implements ContextResolver<ObjectMapper> {
-    final ObjectMapper mapper;
+class CustomObjectMapperProvider implements ContextResolver<ObjectMapper> {
+    private final ObjectMapper mapper;
 
     public CustomObjectMapperProvider() {
         this.mapper = new ObjectMapper();

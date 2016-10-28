@@ -19,10 +19,8 @@
 
 package org.automobile.rest.utils;
 
-/**
- * @author Kimando
- * @Created On 26/02/2015.
- */
+import org.automobile.bal.InitializeBal;
+import org.automobile.bal.impl.InitializeBalImpl;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -33,12 +31,23 @@ import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+/**
+ * @author Kushal
+ * @Date 27-Oct-16
+ */
 public class ContextListener implements ServletContextListener {
-
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-
+        try {
+            InitializeBal initBal = new InitializeBalImpl();
+            System.out.println("Context Initialized - Updating Schemas");
+            initBal.updateSchemas();
+            System.out.println("Schemas Updated - Updating Tables");
+            initBal.updateSchemaTables();
+            System.out.println("All Okay");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override

@@ -1,0 +1,58 @@
+CREATE TABLE IF NOT EXISTS auto.mst_years
+(
+  year_id serial NOT NULL,
+  year integer NOT NULL,
+  CONSTRAINT pk_mst_years PRIMARY KEY (year_id),
+  CONSTRAINT uq_years_mst UNIQUE (year)
+)
+WITH (
+  OIDS=FALSE,
+  autovacuum_enabled = true,
+  autovacuum_vacuum_threshold = 500,
+  autovacuum_analyze_threshold = 500,
+  autovacuum_vacuum_scale_factor = 0,
+  autovacuum_analyze_scale_factor = 0
+);
+ALTER TABLE auto.mst_years
+  OWNER TO {@User};
+GO
+INSERT INTO auto.mst_years(year) Select 1999 Where Not Exists (Select 1 From auto.mst_years where year = 1999);
+GO
+INSERT INTO auto.mst_years(year) Select 2000 Where Not Exists (Select 1 From auto.mst_years where year = 2000);
+GO
+INSERT INTO auto.mst_years(year) Select 2001 Where Not Exists (Select 1 From auto.mst_years where year = 2001);
+GO
+INSERT INTO auto.mst_years(year) Select 2002 Where Not Exists (Select 1 From auto.mst_years where year = 2002);
+GO
+INSERT INTO auto.mst_years(year) Select 2003 Where Not Exists (Select 1 From auto.mst_years where year = 2003);
+GO
+INSERT INTO auto.mst_years(year) Select 2004 Where Not Exists (Select 1 From auto.mst_years where year = 2004);
+GO
+INSERT INTO auto.mst_years(year) Select 2005 Where Not Exists (Select 1 From auto.mst_years where year = 2005);
+GO
+INSERT INTO auto.mst_years(year) Select 2006 Where Not Exists (Select 1 From auto.mst_years where year = 2006);
+GO
+INSERT INTO auto.mst_years(year) Select 2007 Where Not Exists (Select 1 From auto.mst_years where year = 2007);
+GO
+INSERT INTO auto.mst_years(year) Select 2008 Where Not Exists (Select 1 From auto.mst_years where year = 2008);
+GO
+INSERT INTO auto.mst_years(year) Select 2009 Where Not Exists (Select 1 From auto.mst_years where year = 2009);
+GO
+INSERT INTO auto.mst_years(year) Select 2010 Where Not Exists (Select 1 From auto.mst_years where year = 2010);
+GO
+INSERT INTO auto.mst_years(year) Select 2011 Where Not Exists (Select 1 From auto.mst_years where year = 2011);
+GO
+INSERT INTO auto.mst_years(year) Select 2012 Where Not Exists (Select 1 From auto.mst_years where year = 2012);
+GO
+INSERT INTO auto.mst_years(year) Select 2013 Where Not Exists (Select 1 From auto.mst_years where year = 2013);
+GO
+INSERT INTO auto.mst_years(year) Select 2014 Where Not Exists (Select 1 From auto.mst_years where year = 2014);
+GO
+INSERT INTO auto.mst_years(year) Select 2015 Where Not Exists (Select 1 From auto.mst_years where year = 2015);
+GO
+INSERT INTO auto.mst_years(year) Select 2016 Where Not Exists (Select 1 From auto.mst_years where year = 2016);
+GO
+INSERT INTO auto.mst_years(year) Select 2017 Where Not Exists (Select 1 From auto.mst_years where year = 2017);
+GO
+INSERT INTO auto.mst_years(year) Select 2018 Where Not Exists (Select 1 From auto.mst_years where year = 2018);
+GO

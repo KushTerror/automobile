@@ -13,7 +13,7 @@
     <description>Automobile web site data access layer</description>
     <name>Automobile DAL</name>
     <properties>
-        <org.postgresql.version>9.4.1211.jre7</org.postgresql.version>
+        <org.postgresql.version>9.4-1200-jdbc41</org.postgresql.version>
         <org.slf4j.version>1.7.10</org.slf4j.version>
         <org.jboss.logging.version>3.2.1.Final</org.jboss.logging.version>
         <automobile.version>1.0-SNAPSHOT</automobile.version>

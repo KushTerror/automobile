@@ -24,6 +24,8 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
+            classpath:applicationContextDal.xml
+            classpath:applicationContextBal.xml
         </param-value>
     </context-param>
 

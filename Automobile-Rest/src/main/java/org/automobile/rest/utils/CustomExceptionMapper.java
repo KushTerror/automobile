@@ -32,8 +32,9 @@ import javax.ws.rs.ext.ExceptionMapper;
 
 /**
  * @author Kushal
+ * @Date 27-Oct-16
  */
-public class CustomExceptionMapper implements ExceptionMapper<WebApplicationException> {
+class CustomExceptionMapper implements ExceptionMapper<WebApplicationException> {
 
     @Context
     private HttpHeaders headers;
